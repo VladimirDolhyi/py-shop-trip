@@ -20,9 +20,9 @@ def shop_trip() -> None:
         total_cost = 0
         home_location = customer.location
         for shop in shops:
-            trip_cost = customer.calculate_trip_cost(shop.location, customer.car)
+            tr_cost = customer.calculate_trip_cost(shop.location, customer.car)
             shop_cost = shop.calculate_product(customer)
-            total_cost = trip_cost + shop_cost
+            total_cost = tr_cost + shop_cost
             print(f"{customer.name}'s to the {shop.name} costs {total_cost}")
             if total_cost < best_cost:
                 best_cost = total_cost
