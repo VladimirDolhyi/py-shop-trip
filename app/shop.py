@@ -11,4 +11,4 @@ class Shop:
 
     def calculate_product(self, customer: "Customer") -> int:
         return sum(self.products[product] * value
-                   for product, value in customer.product_cart)
+                   for product, value in customer.product_cart.items())
