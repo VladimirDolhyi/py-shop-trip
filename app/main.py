@@ -10,24 +10,28 @@ def shop_trip() -> None:
     with open("app/config.json", "r") as file:
         data = json.load(file)
 
-    customers = [Customer(**customer)
+    customers = [Customer(customer["name"],
+                          customer["product_cart"],
+                          customer["location"],
+                          customer["money"],
+                          Car(customer["car"]["brand"],
+                              customer["car"]["fuel_consumption"]))
                  for customer in data["customers"]]
-    shops = [Shop(**shop) for shop in data["shops"]]
-    customer_cars = {
-        customer["name"]:
-            Car(**customer["car"]) for customer in data["customers"]
-    }
-
+    shops = [Shop(shop["name"],
+                  shop["location"],
+                  shop["products"])
+             for shop in data["shops"]]
+    fuel_price = data["FUEL_PRICE"]
     for customer in customers:
         print(f"{customer.name} has {customer.money} dollars")
         best_cost = float("inf")
         best_shop = None
         home_location = customer.location
         for shop in shops:
-            car = customer_cars[customer.name]
-            tr_cost = customer.calculate_trip_cost(shop.location, car)
+            trip_cost = customer.calc_trip_cost(shop.location,
+                                                customer.car, fuel_price)
             shop_cost = shop.calculate_product(customer)
-            total_cost = tr_cost + shop_cost
+            total_cost = trip_cost + shop_cost
             print(f"{customer.name}'s trip "
                   f"to the {shop.name} costs {total_cost}")
             if total_cost < best_cost:
